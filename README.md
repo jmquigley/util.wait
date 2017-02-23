@@ -27,10 +27,10 @@ $ npm install --save util.wait
 ```javascript
 const wait = require('util.wait').wait;
 
-wait(3)
-	.then((duration: number) => {
+wait(3, 'something')
+	.then((ret: any) => {
 		// continuation after 3 second wait
-		// the duration is the number of millis consumed
+		// the ret is the value passed to then after time expired
 	})
 	.catch((err: string) => {
 		console.error(err);
@@ -40,10 +40,10 @@ wait(3)
 This version calls `wait` with a Promise object returned that can be chained together using *then* (thenable).  The use case for this is within test cases that use other promises where a delay is beneficial to wait some amount of time for async operations to finish in the test.
 
 ```javascript
-waitCallback(3, (duration: number) => {
+waitCallback(3, (ret: any) => {
 	// continuation after 3 second wait
-	// the duration is the number of millis consumed.
-});
+	// the ret is the value passed to then after time expired
+}, 'stuff');
 ```
 
 This version relies on a callback function.  At the end of 3 seconds it is called to complete the wait.

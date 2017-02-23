@@ -4,9 +4,9 @@ import {test} from 'ava';
 import {wait, waitCallback} from '../index';
 
 test('Test the wait promise function', async (t: any) => {
-	await wait(3)
-		.then((duration: number) => {
-			t.is(duration, 3000);
+	await wait(3, 'stuff')
+		.then((ret: any) => {
+			t.is(ret, 'stuff');
 			t.pass();
 		})
 		.catch((err: string) => {
@@ -17,9 +17,9 @@ test('Test the wait promise function', async (t: any) => {
 });
 
 test.cb('Test the wait callback function', (t: any) => {
-	waitCallback(3, (duration: number) => {
-		t.is(duration, 3000);
-		t.pass(duration);
+	waitCallback(3, (ret: any) => {
+		t.is(ret, 'stuff');
+		t.pass(ret);
 		t.end();
-	});
+	}, 'stuff');
 });
