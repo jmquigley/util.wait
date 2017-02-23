@@ -1,23 +1,25 @@
 'use strict';
 
-const path = require('path');
-const fs = require('fs-extra');
-const test = require('ava');
-const uuidV4 = require('uuid/v4');
-const home = require('expand-home-dir');
+import {test} from 'ava';
+import {wait, waitCallback} from '../index';
 
-let unitTestBaseDir = home(path.join('~/', '.tmp', 'unit-test-data'));
-let unitTestDir = home(path.join(unitTestBaseDir, uuidV4()));
-if (fs.existsSync(unitTestDir)) {
-	fs.mkdirsSync(unitTestDir);
-}
+test('Test the wait promise function', async (t: any) => {
+	await wait(3)
+		.then((duration: number) => {
+			t.is(duration, 3000);
+			t.pass();
+		})
+		.catch((err: string) => {
+			t.fail(`${t.title}: ${err}`);
+		});
 
-test('Empty, template test case', (t: any) => {
-	console.log(`Using test directory: ${unitTestDir}`);
 	t.pass();
 });
 
-test.after.always('test cleanup', (t: any) => {
-	fs.removeSync(unitTestBaseDir);
-	t.pass();
+test.cb('Test the wait callback function', (t: any) => {
+	waitCallback(3, (duration: number) => {
+		t.is(duration, 3000);
+		t.pass(duration);
+		t.end();
+	});
 });
