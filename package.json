@@ -32,6 +32,13 @@
   "devDependencies": {
     "ava": "^0.18.1",
     "coveralls": "^2.11.15",
+    "gulp": "^3.9.1",
+    "gulp-cli": "^1.2.2",
+    "gulp-debug": "github:jmquigley/gulp-debug",
+    "gulp-jsdoc-to-markdown": "^1.2.2",
+    "gulp-jsdoc3": "^1.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.8",
     "nyc": "^10.1.2",
     "tslint": "^4.4.2",
     "typescript": "^2.2.1",
@@ -42,8 +49,10 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "build": "./node_modules/.bin/pkgwrap --build",
+    "all": "npm install && npm run build && npm test && npm run report",
+    "build": "./node_modules/.bin/pkgwrap --build && npm run docs",
     "coverage": "./node_modules/.bin/pkgwrap --coverage",
+    "docs": "./node_modules/.bin/gulp docs",
     "postinstall": "./node_modules/.bin/pkgwrap --postinstall",
     "report": "./node_modules/.bin/pkgwrap --reporting",
     "test": "./node_modules/.bin/pkgwrap --testing"

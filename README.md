@@ -2,10 +2,10 @@
 
 > Javascript pause/wait functions
 
-This library contains two functions:
+This [library](docs/index.md) contains two functions:
 
-- `wait` - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.
-- `waitCallback` - JavaScript function that uses a callback after N iterations of S seconds.
+- [wait](docs/index.md#wait) - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.
+- [waitCallback](docs/index.md#waitCallback) - JavaScript function that uses a callback after N iterations of S seconds.
 
 These two functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped [Timeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout) call.  The functions rely on the processing of a *Promise* or a *callback* to do this.
 
@@ -21,13 +21,19 @@ To install as an application dependency:
 $ npm install --save util.wait
 ```
 
+To build the app and run all tests:
+```
+$ npm run all
+```
+
 
 ## Usage
 
 ```javascript
-waitCallback(3, (ret: any) => {
-	// continuation after 3 second wait
-	// the ret is the value passed to then after time has expired
+waitCallback(3, (val: any) => {
+	// continuation after 3 second wait.  The val is passed to the callback
+	// after time has expired.  In this example the string 'stuff' is 
+	// passed.
 }, 'stuff');
 ```
 
@@ -37,9 +43,10 @@ This wait function will pause for N sections and use a callback function on comp
 const wait = require('util.wait').wait;
 
 wait(3, 'something')
-	.then((ret: any) => {
-		// continuation after 3 second wait
-		// the ret is the value passed to then after time has expired
+	.then((val: any) => {
+		// continuation after 3 second wait the val is the value passed
+		// to then after time has expired.  In this example it would 
+		// pass the string 'something'
 	})
 	.catch((err: string) => {
 		console.error(err);
