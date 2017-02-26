@@ -34,7 +34,6 @@
     "coveralls": "^2.11.15",
     "gulp": "^3.9.1",
     "gulp-cli": "^1.2.2",
-    "gulp-debug": "github:jmquigley/gulp-debug",
     "gulp-jsdoc-to-markdown": "^1.2.2",
     "gulp-jsdoc3": "^1.0.1",
     "gulp-rename": "^1.2.2",
