@@ -1,25 +1,23 @@
 'use strict';
 
-import {test} from 'ava';
+import * as assert from 'assert';
 import {wait, waitCallback} from '../index';
 
-test('Test the wait promise function', async (t: any) => {
-	await wait(3, 'stuff')
-		.then((ret: any) => {
-			t.is(ret, 'stuff');
-			t.pass();
-		})
-		.catch((err: string) => {
-			t.fail(`${t.title}: ${err}`);
-		});
+describe('Testing util.wait', () => {
+	it('Test the wait promise function', async () => {
+		await wait(3, 'stuff')
+			.then((ret: any) => {
+				assert.equal(ret, 'stuff');
+			})
+			.catch((err: string) => {
+				assert(false, err);
+			});
+	});
 
-	t.pass();
-});
-
-test.cb('Test the wait callback function', (t: any) => {
-	waitCallback(3, (ret: any) => {
-		t.is(ret, 'stuff');
-		t.pass(ret);
-		t.end();
-	}, 'stuff');
+	it('Test the wait callback function', () => {
+		waitCallback(3, (ret: any) => {
+			assert.equal(ret, 'stuff');
+			assert(ret);
+		}, 'stuff');
+	});
 });
