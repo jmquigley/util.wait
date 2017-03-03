@@ -27,27 +27,29 @@ describe('Testing util.wait', () => {
 		}, 'stuff');
 	});
 
-	it('Test the semaphore class (5 seconds)', (cb) => {
+	it('Test the semaphore class with callback (5 seconds)', (cb) => {
 		let semaphore = new Semaphore(10);
 
 		function f1() {
 			debug(`Starting F1: ${new Date()}`);
-			semaphore.increment();
+			assert(semaphore.increment() === 1);
 			assert(semaphore.counter === 1);
 			// Arbitrary delay to show that the semaphore is waiting
 			waitCallback(2, () => {
 				semaphore.decrement();
+				assert(!semaphore.errorState);
 				debug(`Done with f1 (2 seconds): ${new Date()}`);
 			});
 		}
 
 		function f2() {
 			debug(`Starting F2: ${new Date()}`);
-			semaphore.increment();
+			assert(semaphore.increment() === 2);
 			assert(semaphore.counter === 2);
 			// Arbitrary delay to show that the semaphore is waiting
 			waitCallback(5, () => {
 				semaphore.decrement();
+				assert(!semaphore.errorState);
 				debug(`Done with f2 (5 seconds): ${new Date()}`);
 			});
 		}
@@ -55,36 +57,111 @@ describe('Testing util.wait', () => {
 		f1();
 		f2();
 
-		semaphore.wait(() => {
+		semaphore.waitCallback((err: Error) => {
+			if (err) {
+				assert(false, 'This error should not occur');
+				cb(err.message);
+			}
+
 			assert(semaphore.counter === 0);
+			assert(!semaphore.errorState);
 			debug(`Finished: ${semaphore.toString()}`);
 			return cb();
 		});
 	});
 
-	it('Test semaphore timeout error', (cb) => {
+	it('Test semaphore timeout error with callback (2 seconds)', (cb) => {
 		let timeout: number = 2;
 		let semaphore = new Semaphore(timeout);
 
 		function fn() {
 			debug(`Starting fn: ${new Date()}`);
-			semaphore.increment();
+			assert(semaphore.increment() === 1);
 			assert(semaphore.counter === 1);
 			waitCallback(5, () => {
-				assert(false, 'Timeout error should have occurred');
+				assert(semaphore.errorState);
 			});
 		}
 
 		fn();
 
-		semaphore.wait((err: Error, arg: any) => {
+		semaphore.waitCallback((err: Error) => {
 			if (err) {
-				assert.equal(arg, 'stuff');
+				debug('Caught semaphore wait error');
 				assert.equal(err.message, `Semaphore timeout after ${timeout * 1000}`);
+				assert(semaphore.errorState);
 				return cb();
 			}
 
 			assert(false, 'Timeout error should have occurred');
-		}, 'stuff');
+			return cb();
+		});
+	});
+
+	it('Test the semaphore class with Promise (5 seconds)', async () => {
+		let semaphore = new Semaphore(10);
+
+		function f1() {
+			debug(`Starting F1: ${new Date()}`);
+			assert(semaphore.increment() === 1);
+			assert(semaphore.counter === 1);
+			// Arbitrary delay to show that the semaphore is waiting
+			waitCallback(2, () => {
+				semaphore.decrement();
+				assert(!semaphore.errorState);
+				debug(`Done with f1 (2 seconds): ${new Date()}`);
+			});
+		}
+
+		function f2() {
+			debug(`Starting F2: ${new Date()}`);
+			assert(semaphore.increment() === 2);
+			assert(semaphore.counter === 2);
+			// Arbitrary delay to show that the semaphore is waiting
+			waitCallback(5, () => {
+				semaphore.decrement();
+				assert(!semaphore.errorState);
+				debug(`Done with f2 (5 seconds): ${new Date()}`);
+			});
+		}
+
+		f1();
+		f2();
+
+		await semaphore.wait()
+			.then(() => {
+				assert(semaphore.counter === 0);
+				assert(!semaphore.errorState);
+				debug(`Finished: ${semaphore.toString()}`);
+			})
+			.catch((err: string) => {
+				assert(false, err);
+			});
+	});
+
+	it('Test semaphore timeout error with Promise (2 seconds)', async () => {
+		let timeout: number = 2;
+		let semaphore = new Semaphore(timeout);
+
+		function fn() {
+			debug(`Starting fn: ${new Date()}`);
+			assert(semaphore.increment() === 1);
+			assert(semaphore.counter === 1);
+			waitCallback(5, () => {
+				assert(semaphore.errorState);
+			});
+		}
+
+		fn();
+
+		await semaphore.wait()
+			.then(() => {
+				assert(false, 'Timeout error should have occurred');
+			})
+			.catch((err: string) => {
+				debug('Caught semaphore wait error');
+				assert(semaphore.errorState);
+				assert.equal(err, `Semaphore timeout after ${timeout * 1000}`);
+			});
 	});
 });

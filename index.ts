@@ -44,23 +44,26 @@ export class Semaphore {
 	private _counter: number = 0;
 	private _delay: number = 0;
 	private _duration: number = 0;
+	private _errorState: boolean = false;
 	private _tick: number = 0;
 	private _ticks: number = 200;
 
 	/**
 	 * This creates a simple semaphore counter instance.  Each async function
 	 * will increment the semaphore as they are created.  As they finish their
-	 * operation within the same process will decrement it.  When the wait is
+	 * operation within the same process will decrement it.  When the wait() is
 	 * started it will look at the counter to see if there are processes still
 	 * waiting to finish (counter > 0).  It will then perform a delay loop
-	 * and check for semaphore completion (count === 0)
+	 * and check for semaphore completion (count === 0).  It will continue this
+	 * check until the counter reaches 0 or the timeout occurs.
 	 *
 	 * @param timeout {number} the number of seconds that this semaphore will
 	 * check for completion.  If the semaphore has not completed at the end of
-	 * this delay an Error will be thrown for timeout.
+	 * this delay an Error will returned to the wait callback.
 	 * @param ticks {number} the number of times the semaphore will be checked.
-	 * the delay is divided by this number to determine how often the semaphore
-	 * will be checked within the delay.
+	 * the timeout is divided by this number to determine how often the
+	 * semaphore will be checked during the timeout.  This will prevent blowing
+	 * up the call stack.
 	 * @constructor
 	 */
 	constructor(timeout: number, ticks: number = 200) {
@@ -71,7 +74,7 @@ export class Semaphore {
 	}
 
 	/**
-	 * Decrements the internal value of the counter
+	 * Decrements the internal value of the semaphore counter
 	 * @returns the current value of the counter.
 	 */
 	public decrement(): number {
@@ -80,7 +83,7 @@ export class Semaphore {
 	}
 
 	/**
-	 * Increments the internal value of the counter
+	 * Increments the internal value of the semaphore counter
 	 * @returns the current value of the counter.
 	 */
 	public increment(): number {
@@ -89,24 +92,55 @@ export class Semaphore {
 	}
 
 	/**
-	 * Resets the internal state of the semaphore class.  Generally
-	 * used once a semaphore is done and one wants to use it again
+	 * Resets the internal state of the semaphore instance.  Generally used
+	 * once a semaphore is complete and needs to be reused.
 	 */
 	public reset(): Semaphore {
 		this._duration = 0;
 		this._counter = 0;
+		this._errorState = false;
 		return this;
 	}
 
 	/**
 	 * Activated at some point in a process when one wants to wait for all
-	 * semaphores to complete processing.
+	 * semaphores to complete processing.  This call does not block the event
+	 * loop.  This uses a Promise object to make the call async.
+	 * @param self {Semaphore} a reference to the Semaphore instance
+	 * @returns a JavaScript promise object.
+	 */
+	public wait(self = this) {
+		return new Promise((resolve, reject) => {
+			function run() {
+				if (self._duration < self._delay) {
+					if (self._counter <= 0) {
+						resolve(self);
+					} else {
+						waitCallback(1, () => {
+							self._duration += self._tick;
+							run();
+						}, null, self._tick);
+					}
+				} else {
+					self._errorState = true;
+					reject(`Semaphore timeout after ${self._delay}`);
+				}
+			}
+
+			run();
+		});
+	}
+
+	/**
+	 * Activated at some point in a process when one wants to wait for all
+	 * semaphores to complete processing.  This uses a callback function to
+	 * signal completion instead of a Promise.
 	 * @param cb {Function} a callback function that is executed when the
 	 * semaphore is complete.
 	 * @param arg {Object} an argument that can be passed to the callback
 	 * @param self {Semaphore} a reference to the Semaphore instance
 	 */
-	public wait(cb: Function, arg: any = null, self = this) {
+	public waitCallback(cb: Function, arg: any = null, self = this) {
 		function run() {
 			if (self._duration < self._delay) {
 				if (self._counter <= 0) {
@@ -121,6 +155,7 @@ export class Semaphore {
 				}
 			} else {
 				if (cb) {
+					self._errorState = true;
 					cb(new Error(`Semaphore timeout after ${self._delay}`), arg);
 				}
 			}
@@ -135,9 +170,10 @@ export class Semaphore {
 	public toString(): string {
 		let s: string = '';
 		s += 'Semaphore {\n';
-		s += `    counter: ${this._counter}\n`;
+		s += `    counter: ${this.counter}\n`;
 		s += `    timeout: ${this._delay} millis\n`;
-		s += `   duration: ${this._duration} millis\n`;
+		s += `   duration: ${this.duration} millis\n`;
+		s += ` errorState: ${this.errorState}`;
 		s += `      ticks: ${this._ticks}\n`;
 		s += `       tick: ${this._tick} millis\n`;
 		s += '}\n';
@@ -147,5 +183,13 @@ export class Semaphore {
 
 	get counter(): number {
 		return this._counter;
+	}
+
+	get errorState(): boolean {
+		return this._errorState;
+	}
+
+	get duration(): number {
+		return this._duration;
 	}
 }

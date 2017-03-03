@@ -100,10 +100,10 @@
 <ul>
 <li><a href="docs/index.md#wait">wait</a> - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.</li>
 <li><a href="docs/index.md#waitCallback">waitCallback</a> - JavaScript function that uses a callback after N iterations of S seconds.</li>
-<li><a href="docs/index.md#Semaphore">Semaphore</a> - A simple JavaScript semaphore counter object.</li>
+<li><a href="docs/index.md#Semaphore">Semaphore</a> - A simple JavaScript semaphore counter object.  Creates a completion barrier with a counter.</li>
 </ul>
-<p>These two functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">Timeout</a> call.  The functions rely on the processing of a <em>Promise</em> or a <em>callback</em> to do this.</p>
-<p>The class implements a simple <a href="https://en.wikipedia.org/wiki/Asynchronous_semaphore">semaphore counter</a>.  An instance of <code>Semaphore</code> is created.  Before the wait is called the semaphore is incremented and decremented.  While the semaphore counter is &gt; 0 a wait state will occur.  During processing the semaphore is decremented as a process that uses it is finishd with it.  When the counter is &lt; 0 then the wait state will end.</p>
+<p>The two functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">Timeout</a> call.  The functions rely on the processing of a <em>Promise</em> or a <em>callback</em> to do this.</p>
+<p>The class implements a simple <a href="https://en.wikipedia.org/wiki/Asynchronous_semaphore">semaphore counter</a>.  An instance of <code>Semaphore</code> is created.  Before the <code>wait()</code> promise is called the semaphore is incremented and/or decremented.  While the semaphore counter is <code>&gt; 0</code> a wait state will occur.  During processing the semaphore is decremented as a process that uses the semaphore is finishd with it.  When the counter is <code>&lt;= 0</code> then the <code>wait()</code> state will end and the semaphore promise will be resolved.</p>
 <h2>Installation</h2><p>To install as a global package:</p>
 <pre class="prettyprint source"><code>$ npm install --global util.wait</code></pre><p>To install as an application dependency:</p>
 <pre class="prettyprint source"><code>$ npm install --save util.wait</code></pre><p>To build the app and run all tests:</p>
@@ -123,7 +123,9 @@ wait(3, 'something')
     .catch((err: string) => {
         console.error(err);
     });</code></pre><p>This version calls <code>wait</code> with a Promise object returned that can be chained together using <em>then</em> (thenable).  This is just a wrapper on around the first function to make it thenable.  The use case for this is within test cases that use other promises where a delay is beneficial to wait some amount of time for async operations to finish in the test (such as testing a timed interval and its results).</p>
-<pre class="prettyprint source lang-javascript"><code>let semaphore = new Semaphore(10);
+<pre class="prettyprint source lang-javascript"><code>const Semaphore = require('util.wait').Semaphore;
+
+let semaphore = new Semaphore(10);
 
 function f1() {
     console.log(`Starting F1: ${new Date()}`);
@@ -150,10 +152,14 @@ function f2() {
 f1();
 f2();
 
-semaphore.wait(() => {
-    assert(semaphore.counter === 0);
-    console.log(`Finished: ${semaphore.toString()}`);
-});</code></pre><p>This example creates a semaphore with a 10 second timeout.  It has two functions <code>f1</code> and <code>f2</code>.  Both functions run for an arbitrary amount of time in a delay loop.  They increment and decrement the semaphore.  After the two functions are started the semaphore starts its <code>wait()</code> state.  When the delay functions within <code>f1</code> and <code>f2</code> complete they each decrement the semaphore.  When the semaphore counter reaches 0 it will execute the semaphore callback.</p></article>
+semaphore.wait()
+    .then(() => {
+        assert(semaphore.counter === 0);
+        debug(`Finished: ${semaphore.toString()}`);
+    })
+    .catch((err: string) => {
+        assert(false, err);
+    });</code></pre><p>This example creates a semaphore with a 10 second timeout.  It has two functions <code>f1</code> and <code>f2</code>.  Both functions run for an arbitrary amount of time in a delay loop.  They increment and decrement the semaphore.  After the two functions are started the semaphore starts its <code>wait()</code> state promise.  When the delay functions within <code>f1</code> and <code>f2</code> complete they each decrement the semaphore.  When the semaphore counter reaches 0 the promise will be resolved.  If the timeout occurs, then the catch within the promise will reject with an error.</p></article>
     </section>
 
 
@@ -199,7 +205,7 @@ semaphore.wait(() => {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on March 3rd 2017, 10:36:10 am
+		on March 3rd 2017, 12:01:16 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

@@ -32,7 +32,8 @@ Creates an instance of the Semaphore class
     * [.decrement()](#Semaphore+decrement) ⇒
     * [.increment()](#Semaphore+increment) ⇒
     * [.reset()](#Semaphore+reset)
-    * [.wait(cb, arg, self)](#Semaphore+wait)
+    * [.wait(self)](#Semaphore+wait) ⇒
+    * [.waitCallback(cb, arg, self)](#Semaphore+waitCallback)
     * [.toString()](#Semaphore+toString) ⇒
 
 <a name="new_Semaphore_new"></a>
@@ -40,43 +41,59 @@ Creates an instance of the Semaphore class
 ### new Semaphore(timeout, ticks)
 This creates a simple semaphore counter instance.  Each async function
 will increment the semaphore as they are created.  As they finish their
-operation within the same process will decrement it.  When the wait is
+operation within the same process will decrement it.  When the wait() is
 started it will look at the counter to see if there are processes still
 waiting to finish (counter > 0).  It will then perform a delay loop
-and check for semaphore completion (count === 0)
+and check for semaphore completion (count === 0).  It will continue this
+check until the counter reaches 0 or the timeout occurs.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| timeout | <code>number</code> |  | the number of seconds that this semaphore will check for completion.  If the semaphore has not completed at the end of this delay an Error will be thrown for timeout. |
-| ticks | <code>number</code> | <code>200</code> | the number of times the semaphore will be checked. the delay is divided by this number to determine how often the semaphore will be checked within the delay. |
+| timeout | <code>number</code> |  | the number of seconds that this semaphore will check for completion.  If the semaphore has not completed at the end of this delay an Error will returned to the wait callback. |
+| ticks | <code>number</code> | <code>200</code> | the number of times the semaphore will be checked. the timeout is divided by this number to determine how often the semaphore will be checked during the timeout.  This will prevent blowing up the call stack. |
 
 <a name="Semaphore+decrement"></a>
 
 ### semaphore.decrement() ⇒
-Decrements the internal value of the counter
+Decrements the internal value of the semaphore counter
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 **Returns**: the current value of the counter.  
 <a name="Semaphore+increment"></a>
 
 ### semaphore.increment() ⇒
-Increments the internal value of the counter
+Increments the internal value of the semaphore counter
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 **Returns**: the current value of the counter.  
 <a name="Semaphore+reset"></a>
 
 ### semaphore.reset()
-Resets the internal state of the semaphore class.  Generally
-used once a semaphore is done and one wants to use it again
+Resets the internal state of the semaphore instance.  Generally used
+once a semaphore is complete and needs to be reused.
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 <a name="Semaphore+wait"></a>
 
-### semaphore.wait(cb, arg, self)
+### semaphore.wait(self) ⇒
 Activated at some point in a process when one wants to wait for all
-semaphores to complete processing.
+semaphores to complete processing.  This call does not block the event
+loop.  This uses a Promise object to make the call async.
+
+**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Returns**: a JavaScript promise object.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| self | <code>[Semaphore](#Semaphore)</code> | a reference to the Semaphore instance |
+
+<a name="Semaphore+waitCallback"></a>
+
+### semaphore.waitCallback(cb, arg, self)
+Activated at some point in a process when one wants to wait for all
+semaphores to complete processing.  This uses a callback function to
+signal completion instead of a Promise.
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 
