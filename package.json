@@ -4,6 +4,7 @@
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "Javascript pause/wait functions",
   "private": false,
+  "debug": false,
   "license": "MIT",
   "repository": {
     "type": "git",

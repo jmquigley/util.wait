@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Global</title>
+	<title>Documentation Class: Semaphore</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,14 +72,16 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Class: Semaphore</h1>
 <section>
 
 <header>
     
         <h2>
-        
+        Semaphore
         </h2>
+        
+            <div class="class-description"><p>Creates an instance of the Semaphore class</p></div>
         
     
 </header>
@@ -89,71 +91,9 @@
     <div class="container-overview">
     
         
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
 <hr>
 <dt>
-    <h4 class="name" id="wait"><span class="type-signature"></span>wait(stop, arg, delay)</h4>
+    <h4 class="name" id="Semaphore"><span class="type-signature"></span>new Semaphore(timeout, ticks)</h4>
     
     
 </dt>
@@ -161,7 +101,12 @@
 
     
     <div class="description">
-        <p>Wraps the waitCallback function into a Promise.</p>
+        <p>This creates a simple semaphore counter instance.  Each async function
+will increment the semaphore as they are created.  As they finish their
+operation within the same process will decrement it.  When the wait is
+started it will look at the counter to see if there are processes still
+waiting to finish (counter &gt; 0).  It will then perform a delay loop
+and check for semaphore completion (count === 0)</p>
     </div>
     
 
@@ -198,7 +143,7 @@
 
         <tr>
             
-                <td class="name"><code>stop</code></td>
+                <td class="name"><code>timeout</code></td>
             
 
             <td class="type">
@@ -216,51 +161,19 @@
             
                 <td class="default">
                 
-                    1
-                
                 </td>
             
 
-            <td class="description last"><p>the number of delay iterations.  This is would be in
-seconds if delay is 1000 millis.</p></td>
+            <td class="description last"><p>the number of seconds that this semaphore will
+check for completion.  If the semaphore has not completed at the end of
+this delay an Error will be thrown for timeout.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>arg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>an object that should be returned by the callback when
-the wait is complete.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>delay</code></td>
+                <td class="name"><code>ticks</code></td>
             
 
             <td class="type">
@@ -278,12 +191,14 @@ the wait is complete.</p></td>
             
                 <td class="default">
                 
-                    1000
+                    200
                 
                 </td>
             
 
-            <td class="description last"><p>the number of millis to pause per stop.</p></td>
+            <td class="description last"><p>the number of times the semaphore will be checked.
+the delay is divided by this number to determine how often the semaphore
+will be checked within the delay.</p></td>
         </tr>
 
     
@@ -343,27 +258,110 @@ the wait is complete.</p></td>
     
 
     
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<hr>
+<dt>
+    <h4 class="name" id="decrement"><span class="type-signature"></span>decrement()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Decrements the internal value of the counter</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
     <h5>Returns:</h5>
     
             
 <div class="param-desc">
-    <p>a Javascript promise object</p>
+    <p>the current value of the counter.</p>
 </div>
 
 
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
 
 
         
@@ -375,7 +373,7 @@ the wait is complete.</p></td>
             
 <hr>
 <dt>
-    <h4 class="name" id="waitCallback"><span class="type-signature"></span>waitCallback(stop, cb, arg, delay)</h4>
+    <h4 class="name" id="increment"><span class="type-signature"></span>increment()</h4>
     
     
 </dt>
@@ -383,10 +381,261 @@ the wait is complete.</p></td>
 
     
     <div class="description">
-        <p>Uses the timeout function to create a pause in a function without stopping
-the event loop.  The default without any parameters is a 1 second pause.
-When the timeout ends a callback is executed and it receives the <em>arg</em>
-parameter to be used in the callback.</p>
+        <p>Increments the internal value of the counter</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>the current value of the counter.</p>
+</div>
+
+
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="reset"><span class="type-signature"></span>reset()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Resets the internal state of the semaphore class.  Generally
+used once a semaphore is done and one wants to use it again</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="toString"><span class="type-signature"></span>toString()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>a string representation of the semaphore instance</p>
+</div>
+
+
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="wait"><span class="type-signature"></span>wait(cb, arg, self)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Activated at some point in a process when one wants to wait for all
+semaphores to complete processing.</p>
     </div>
     
 
@@ -423,37 +672,6 @@ parameter to be used in the callback.</p>
 
         <tr>
             
-                <td class="name"><code>stop</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>the number of delay iterations.  This is would be in
-seconds if delay is 1000 millis.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>cb</code></td>
             
 
@@ -472,13 +690,11 @@ seconds if delay is 1000 millis.</p></td>
             
                 <td class="default">
                 
-                    null
-                
                 </td>
             
 
-            <td class="description last"><p>a callback function that is executed when the timeout
-is complete.</p></td>
+            <td class="description last"><p>a callback function that is executed when the
+semaphore is complete.</p></td>
         </tr>
 
     
@@ -508,21 +724,20 @@ is complete.</p></td>
                 </td>
             
 
-            <td class="description last"><p>an object that should be returned by the callback when
-the wait is complete.</p></td>
+            <td class="description last"><p>an argument that can be passed to the callback</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>delay</code></td>
+                <td class="name"><code>self</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type"><a href="Semaphore.html">Semaphore</a></span>
 
 
 
@@ -534,12 +749,10 @@ the wait is complete.</p></td>
             
                 <td class="default">
                 
-                    1000
-                
                 </td>
             
 
-            <td class="description last"><p>the number of millis to pause per stop.</p></td>
+            <td class="description last"><p>a reference to the Semaphore instance</p></td>
         </tr>
 
     

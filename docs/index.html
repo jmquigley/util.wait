@@ -31,6 +31,13 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="Semaphore.html">Semaphore</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="global.html#wait">wait</a></li><li><a href="global.html#waitCallback">waitCallback</a></li>
@@ -89,12 +96,14 @@
         <article><h1>util.wait <a href="https://travis-ci.org/jmquigley/util.wait"><img src="https://travis-ci.org/jmquigley/util.wait.svg?branch=master" alt="Build Status"></a> <a href="https://palantir.github.io/tslint/"><img src="https://img.shields.io/badge/code_style-TSlint-5ed9c7.svg" alt="tslint code style"></a> <a href="https://www.npmjs.com/package/util.wait"><img src="https://img.shields.io/npm/v/util.wait.svg" alt="NPM"></a> <a href="https://coveralls.io/github/jmquigley/util.wait?branch=master"><img src="https://coveralls.io/repos/github/jmquigley/util.wait/badge.svg?branch=master" alt="Coverage Status"></a></h1><blockquote>
 <p>Javascript pause/wait functions</p>
 </blockquote>
-<p>This <a href="docs/index.md">library</a> contains two functions:</p>
+<p>This <a href="docs/index.md">library</a> contains two functions and a class:</p>
 <ul>
 <li><a href="docs/index.md#wait">wait</a> - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.</li>
 <li><a href="docs/index.md#waitCallback">waitCallback</a> - JavaScript function that uses a callback after N iterations of S seconds.</li>
+<li><a href="docs/index.md#Semaphore">Semaphore</a> - A simple JavaScript semaphore counter object.</li>
 </ul>
 <p>These two functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout">Timeout</a> call.  The functions rely on the processing of a <em>Promise</em> or a <em>callback</em> to do this.</p>
+<p>The class implements a simple <a href="https://en.wikipedia.org/wiki/Asynchronous_semaphore">semaphore counter</a>.  An instance of <code>Semaphore</code> is created.  Before the wait is called the semaphore is incremented and decremented.  While the semaphore counter is &gt; 0 a wait state will occur.  During processing the semaphore is decremented as a process that uses it is finishd with it.  When the counter is &lt; 0 then the wait state will end.</p>
 <h2>Installation</h2><p>To install as a global package:</p>
 <pre class="prettyprint source"><code>$ npm install --global util.wait</code></pre><p>To install as an application dependency:</p>
 <pre class="prettyprint source"><code>$ npm install --save util.wait</code></pre><p>To build the app and run all tests:</p>
@@ -113,7 +122,38 @@ wait(3, 'something')
     })
     .catch((err: string) => {
         console.error(err);
-    });</code></pre><p>This version calls <code>wait</code> with a Promise object returned that can be chained together using <em>then</em> (thenable).  This is just a wrapper on around the first function to make it thenable.  The use case for this is within test cases that use other promises where a delay is beneficial to wait some amount of time for async operations to finish in the test (such as testing a timed interval and its results).</p></article>
+    });</code></pre><p>This version calls <code>wait</code> with a Promise object returned that can be chained together using <em>then</em> (thenable).  This is just a wrapper on around the first function to make it thenable.  The use case for this is within test cases that use other promises where a delay is beneficial to wait some amount of time for async operations to finish in the test (such as testing a timed interval and its results).</p>
+<pre class="prettyprint source lang-javascript"><code>let semaphore = new Semaphore(10);
+
+function f1() {
+    console.log(`Starting F1: ${new Date()}`);
+    semaphore.increment();
+    assert(semaphore.counter === 1);
+    // Arbitrary delay to show that the semaphore is waiting
+    waitCallback(2, () => {
+        semaphore.decrement();
+        console.log(`Done with f1 (2 seconds): ${new Date()}`);
+    });
+}
+
+function f2() {
+    console.log(`Starting F2: ${new Date()}`);
+    semaphore.increment();
+    assert(semaphore.counter === 2);
+    // Arbitrary delay to show that the semaphore is waiting
+    waitCallback(5, () => {
+        semaphore.decrement();
+        console.log(`Done with f2 (5 seconds): ${new Date()}`);
+    });
+}
+
+f1();
+f2();
+
+semaphore.wait(() => {
+    assert(semaphore.counter === 0);
+    console.log(`Finished: ${semaphore.toString()}`);
+});</code></pre><p>This example creates a semaphore with a 10 second timeout.  It has two functions <code>f1</code> and <code>f2</code>.  Both functions run for an arbitrary amount of time in a delay loop.  They increment and decrement the semaphore.  After the two functions are started the semaphore starts its <code>wait()</code> state.  When the delay functions within <code>f1</code> and <code>f2</code> complete they each decrement the semaphore.  When the semaphore counter reaches 0 it will execute the semaphore callback.</p></article>
     </section>
 
 
@@ -159,7 +199,7 @@ wait(3, 'something')
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on March 1st 2017, 9:44:49 am
+		on March 3rd 2017, 10:36:10 am
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
