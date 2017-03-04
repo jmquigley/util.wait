@@ -28,6 +28,7 @@
     "gulp-jsdoc3": "^1.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.8",
+    "jsdoc": "^3.4.3",
     "mocha": "^3.2.0",
     "nyc": "^10.1.2",
     "tslint": "^4.5.1",
