@@ -28,7 +28,7 @@ Creates an instance of the Semaphore class
 **Kind**: global class  
 
 * [Semaphore](#Semaphore)
-    * [new Semaphore(timeout, ticks)](#new_Semaphore_new)
+    * [new Semaphore(timeout, [initial], ticks)](#new_Semaphore_new)
     * [.decrement()](#Semaphore+decrement) ⇒
     * [.increment()](#Semaphore+increment) ⇒
     * [.reset()](#Semaphore+reset)
@@ -38,7 +38,7 @@ Creates an instance of the Semaphore class
 
 <a name="new_Semaphore_new"></a>
 
-### new Semaphore(timeout, ticks)
+### new Semaphore(timeout, [initial], ticks)
 This creates a simple semaphore counter instance.  Each async function
 will increment the semaphore as they are created.  As they finish their
 operation within the same process will decrement it.  When the wait() is
@@ -51,6 +51,7 @@ check until the counter reaches 0 or the timeout occurs.
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | timeout | <code>number</code> |  | the number of seconds that this semaphore will check for completion.  If the semaphore has not completed at the end of this delay an Error will returned to the wait callback. |
+| [initial] | <code>boolean</code> | <code>false</code> | if true, then the semaphore is initially incremented, otherwise it is zero.  The default is false. |
 | ticks | <code>number</code> | <code>200</code> | the number of times the semaphore will be checked. the timeout is divided by this number to determine how often the semaphore will be checked during the timeout.  This will prevent blowing up the call stack. |
 
 <a name="Semaphore+decrement"></a>

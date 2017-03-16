@@ -27,6 +27,36 @@ describe('Testing util.wait', () => {
 		}, 'stuff');
 	});
 
+
+	it('Test the semaphore class with initial increment (2 seconds)', (cb) => {
+		let semaphore = new Semaphore(10, true);
+
+		function f1() {
+			debug(`Starting F1: ${new Date()}`);
+			assert(semaphore.counter === 1);
+			// Arbitrary delay to show that the semaphore is waiting
+			waitCallback(2, () => {
+				semaphore.decrement();
+				assert(!semaphore.errorState);
+				debug(`Done with f1 (2 seconds): ${new Date()}`);
+			});
+		}
+
+		f1();
+
+		semaphore.waitCallback((err: Error) => {
+			if (err) {
+				assert(false, 'This error should not occur');
+				cb(err.message);
+			}
+
+			assert(semaphore.counter === 0);
+			assert(!semaphore.errorState);
+			debug(`Finished: ${semaphore.toString()}`);
+			return cb();
+		});
+	});
+
 	it('Test the semaphore class with callback (5 seconds)', (cb) => {
 		let semaphore = new Semaphore(10);
 

@@ -60,17 +60,23 @@ export class Semaphore {
 	 * @param timeout {number} the number of seconds that this semaphore will
 	 * check for completion.  If the semaphore has not completed at the end of
 	 * this delay an Error will returned to the wait callback.
+	 * @param [initial] {boolean} if true, then the semaphore is initially
+	 * incremented, otherwise it is zero.  The default is false.
 	 * @param ticks {number} the number of times the semaphore will be checked.
 	 * the timeout is divided by this number to determine how often the
 	 * semaphore will be checked during the timeout.  This will prevent blowing
 	 * up the call stack.
 	 * @constructor
 	 */
-	constructor(timeout: number, ticks: number = 200) {
+	constructor(timeout: number, initial: boolean = false, ticks: number = 200) {
 		this._delay = timeout * 1000;  // convert timeout seconds to millis
 		this._ticks = ticks;
 		this._tick = this._delay / this._ticks;
 		this.reset();
+
+		if (initial) {
+			this.increment();
+		}
 	}
 
 	/**
