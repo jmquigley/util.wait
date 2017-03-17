@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#wait">wait</a></li><li><a href="global.html#waitCallback">waitCallback</a></li>
+					<li><a href="global.html#waitCallback">waitCallback</a></li><li><a href="global.html#waitPromise">waitPromise</a></li>
 				</ul>
 			</li>
 			
@@ -153,7 +153,239 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="wait"><span class="type-signature"></span>wait(stop, arg, delay)</h4>
+    <h4 class="name" id="waitCallback"><span class="type-signature"></span>waitCallback(stop, cb, arg, delay)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Uses the timeout function to create a pause in a function without stopping
+the event loop.  The default without any parameters is a 1 second pause.
+When the timeout ends a callback is executed and it receives the <em>arg</em>
+parameter to be used in the callback.  This is an ansync function.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>stop</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+
+            <td class="description last"><p>the number of delay iterations.  This is would be in
+seconds if delay is 1000 millis.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cb</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>a callback function that is executed when the timeout
+is complete.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>arg</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    null
+                
+                </td>
+            
+
+            <td class="description last"><p>an object that should be returned by the callback when
+the wait is complete.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delay</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    1000
+                
+                </td>
+            
+
+            <td class="description last"><p>the number of millis to pause per stop.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="waitPromise"><span class="type-signature"></span>waitPromise(stop, arg, delay)</h4>
     
     
 </dt>
@@ -371,238 +603,6 @@ the wait is complete.</p></td>
     
 </dd>
 
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="waitCallback"><span class="type-signature"></span>waitCallback(stop, cb, arg, delay)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Uses the timeout function to create a pause in a function without stopping
-the event loop.  The default without any parameters is a 1 second pause.
-When the timeout ends a callback is executed and it receives the <em>arg</em>
-parameter to be used in the callback.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>stop</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    1
-                
-                </td>
-            
-
-            <td class="description last"><p>the number of delay iterations.  This is would be in
-seconds if delay is 1000 millis.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>cb</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>a callback function that is executed when the timeout
-is complete.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>arg</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    null
-                
-                </td>
-            
-
-            <td class="description last"><p>an object that should be returned by the callback when
-the wait is complete.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>delay</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    1000
-                
-                </td>
-            
-
-            <td class="description last"><p>the number of millis to pause per stop.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
         </dl>
     
 
@@ -653,7 +653,7 @@ the wait is complete.</p></td>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on March 16th 2017, 11:27:26 am
+		on March 16th 2017, 8:58:15 pm
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

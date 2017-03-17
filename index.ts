@@ -1,4 +1,35 @@
 /**
+ * Performs a blocking wait when called.  It will stay in this function until
+ * the wait period has ended.  It takes the delay time and divides it into
+ * a tick (the number of millis that will elapse before a time check will
+ * occur).
+ * @param stop {number} the number of seconds in this delay
+ * @param cb {Function} the callback used when this wait is finished.
+ * @param arg {Object} the argument passed to the callback
+ * @param delay {number} the number of millis in each delay.  Default is 1000
+ * @param ticks {number} the number of iterations.
+ */
+export function wait(stop: number = 1, cb: Function = null, arg: any = null, delay: number = 1000, ticks: number = 200) {
+	let tick = (stop < 60) ? 500 : (stop * delay) / ticks;
+	let start = Date.now();
+	let end = start + (stop * delay);
+
+	function fn() {
+		if (Date.now() > end) {
+			if (cb) {
+				return cb(arg);
+			}
+		} else {
+			start += tick;
+			while (Date.now() <= start) {}
+			fn();
+		}
+	}
+
+	fn();
+}
+
+/**
  * Wraps the waitCallback function into a Promise.
  * @param stop {number} the number of delay iterations.  This is would be in
  * seconds if delay is 1000 millis.
@@ -7,7 +38,7 @@
  * @param delay {number} the number of millis to pause per stop.
  * @returns {Promise} a Javascript promise object
  */
-export function wait(stop: number = 1, arg: any = null, delay: number = 1000) {
+export function waitPromise(stop: number = 1, arg: any = null, delay: number = 1000) {
 	return new Promise((resolve) => {
 		waitCallback(stop, (ret: any) => {
 			resolve(ret);
@@ -19,7 +50,7 @@ export function wait(stop: number = 1, arg: any = null, delay: number = 1000) {
  * Uses the timeout function to create a pause in a function without stopping
  * the event loop.  The default without any parameters is a 1 second pause.
  * When the timeout ends a callback is executed and it receives the *arg*
- * parameter to be used in the callback.
+ * parameter to be used in the callback.  This is an ansync function.
  * @param stop {number} the number of delay iterations.  This is would be in
  * seconds if delay is 1000 millis.
  * @param cb {Function} a callback function that is executed when the timeout

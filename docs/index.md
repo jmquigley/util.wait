@@ -9,14 +9,14 @@
 ## Functions
 
 <dl>
-<dt><a href="#wait">wait(stop, arg, delay)</a> ⇒ <code>Promise</code></dt>
+<dt><a href="#waitPromise">waitPromise(stop, arg, delay)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Wraps the waitCallback function into a Promise.</p>
 </dd>
 <dt><a href="#waitCallback">waitCallback(stop, cb, arg, delay)</a></dt>
 <dd><p>Uses the timeout function to create a pause in a function without stopping
 the event loop.  The default without any parameters is a 1 second pause.
 When the timeout ends a callback is executed and it receives the <em>arg</em>
-parameter to be used in the callback.</p>
+parameter to be used in the callback.  This is an ansync function.</p>
 </dd>
 </dl>
 
@@ -109,9 +109,9 @@ signal completion instead of a Promise.
 ### semaphore.toString() ⇒
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 **Returns**: a string representation of the semaphore instance  
-<a name="wait"></a>
+<a name="waitPromise"></a>
 
-## wait(stop, arg, delay) ⇒ <code>Promise</code>
+## waitPromise(stop, arg, delay) ⇒ <code>Promise</code>
 Wraps the waitCallback function into a Promise.
 
 **Kind**: global function  
@@ -129,7 +129,7 @@ Wraps the waitCallback function into a Promise.
 Uses the timeout function to create a pause in a function without stopping
 the event loop.  The default without any parameters is a 1 second pause.
 When the timeout ends a callback is executed and it receives the *arg*
-parameter to be used in the callback.
+parameter to be used in the callback.  This is an ansync function.
 
 **Kind**: global function  
 
