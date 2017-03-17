@@ -9,6 +9,10 @@
 ## Functions
 
 <dl>
+<dt><a href="#wait">wait(stop, cb, arg, delay)</a></dt>
+<dd><p>Performs a BLOCKING noisy spinwait when called.  It will stay in this
+function until the wait period has ended.</p>
+</dd>
 <dt><a href="#waitPromise">waitPromise(stop, arg, delay)</a> ⇒ <code>Promise</code></dt>
 <dd><p>Wraps the waitCallback function into a Promise.</p>
 </dd>
@@ -109,6 +113,21 @@ signal completion instead of a Promise.
 ### semaphore.toString() ⇒
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 **Returns**: a string representation of the semaphore instance  
+<a name="wait"></a>
+
+## wait(stop, cb, arg, delay)
+Performs a BLOCKING noisy spinwait when called.  It will stay in this
+function until the wait period has ended.
+
+**Kind**: global function  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| stop | <code>number</code> | <code>1</code> | the number of seconds in this delay |
+| cb | <code>function</code> | <code></code> | the callback used when this wait is finished. |
+| arg | <code>Object</code> | <code></code> | the argument passed to the callback |
+| delay | <code>number</code> | <code>1000</code> | the number of millis in each delay.  Default is 1000 |
+
 <a name="waitPromise"></a>
 
 ## waitPromise(stop, arg, delay) ⇒ <code>Promise</code>

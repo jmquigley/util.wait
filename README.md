@@ -4,8 +4,9 @@
 
 This [library](docs/index.md) contains two functions and a class:
 
-- [wait](docs/index.md#wait) - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.
-- [waitCallback](docs/index.md#waitCallback) - JavaScript function that uses a callback after N iterations of S seconds.
+- [wait](docs/index.md#wait) - Performs a blocked wait (like sleep) and doesn't return until the wait is over.  Calls the given callback at the end of the wait period.
+- [waitPromise](docs/index.md#waitPromise) - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.  This is an async function.  The delay returns via a thenable when complete.
+- [waitCallback](docs/index.md#waitCallback) - JavaScript function that uses a callback after N iterations of S seconds.  This is an async function.  The delay returns via callback when complete.
 - [Semaphore](docs/index.md#Semaphore) - A simple JavaScript semaphore counter object.  Creates a completion barrier with a counter.
 
 The two functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped [Timeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout) call.  The functions rely on the processing of a *Promise* or a *callback* to do this.
@@ -35,7 +36,7 @@ $ npm run all
 ```javascript
 waitCallback(3, (val: any) => {
 	// continuation after 3 second wait.  The val is passed to the callback
-	// after time has expired.  In this example the string 'stuff' is 
+	// after time has expired.  In this example the string 'stuff' is
 	// passed.
 }, 'stuff');
 ```
@@ -43,12 +44,12 @@ waitCallback(3, (val: any) => {
 This wait function will pause for N sections and use a callback function on completion.  The example shows that at the end of 3 seconds it is called to complete the wait.
 
 ```javascript
-const wait = require('util.wait').wait;
+const waitPromise = require('util.wait').waitPromise;
 
-wait(3, 'something')
+waitPromise(3, 'something')
 	.then((val: any) => {
 		// continuation after 3 second wait the val is the value passed
-		// to then after time has expired.  In this example it would 
+		// to then after time has expired.  In this example it would
 		// pass the string 'something'
 	})
 	.catch((err: string) => {
@@ -56,7 +57,7 @@ wait(3, 'something')
 	});
 ```
 
-This version calls `wait` with a Promise object returned that can be chained together using *then* (thenable).  This is just a wrapper on around the first function to make it thenable.  The use case for this is within test cases that use other promises where a delay is beneficial to wait some amount of time for async operations to finish in the test (such as testing a timed interval and its results).
+This version calls `waitPromise` with a Promise object returned that can be chained together using *then* (thenable).  This is just a wrapper on around the `waitCallback` function to make it thenable.  The use case for this is within test cases that use other promises where a delay is beneficial to wait some amount of time for async operations to finish in the test (such as testing a timed interval and its results).
 
 ```javascript
 const Semaphore = require('util.wait').Semaphore;
