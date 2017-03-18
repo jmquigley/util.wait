@@ -1,6 +1,6 @@
 {
   "name": "util.wait",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "jmquigley <jmquigley@outlook.com>",
   "description": "Javascript pause/wait functions",
   "private": false,
