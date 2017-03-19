@@ -1089,9 +1089,9 @@ expand-brackets@^0.1.4:
   dependencies:
     is-posix-bracket "^0.1.0"
 
-expand-home-dir@0.0.3:
+"expand-home-dir@github:jmquigley/expand-home-dir":
   version "0.0.3"
-  resolved "https://registry.yarnpkg.com/expand-home-dir/-/expand-home-dir-0.0.3.tgz#72de8a0486cc28a3bbd704635398825b5b62827d"
+  resolved "https://codeload.github.com/jmquigley/expand-home-dir/tar.gz/05ec8dcf0aaff75086ec79fdba28e1f85c2bf0c0"
 
 expand-range@^1.8.1:
   version "1.8.2"
@@ -2451,8 +2451,8 @@ mocha@^3.2.0:
     supports-color "3.1.2"
 
 moment@^2.14.1:
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.17.1.tgz#fed9506063f36b10f066c8b59a144d7faebe1d82"
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.0.tgz#6cfec6a495eca915d02600a67020ed994937252c"
 
 ms@0.7.1:
   version "0.7.1"
@@ -3497,8 +3497,8 @@ typical@^2.1, typical@^2.2, typical@^2.3.0, typical@^2.4.2, typical@^2.5.0, typi
   resolved "https://registry.yarnpkg.com/typical/-/typical-2.6.0.tgz#89d51554ab139848a65bcc2c8772f8fb450c40ed"
 
 uglify-js@^2.6:
-  version "2.8.13"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.13.tgz#d0cdf02f3c661484fac601b7e723207b735a374c"
+  version "2.8.14"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.8.14.tgz#25b15d1af39b21752ee33703adbf432e8bc8f77d"
   dependencies:
     source-map "~0.5.1"
     uglify-to-browserify "~1.0.0"
@@ -3597,11 +3597,11 @@ util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
-util.pkgwrap@0.0.17:
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/util.pkgwrap/-/util.pkgwrap-0.0.17.tgz#ae0de1e83c7ad57f1a9966b27e4acd074bc70f9c"
+util.pkgwrap@0.0.18:
+  version "0.0.18"
+  resolved "https://registry.yarnpkg.com/util.pkgwrap/-/util.pkgwrap-0.0.18.tgz#d36e85311550ac37c945eef4f92eba9c77b78e35"
   dependencies:
-    expand-home-dir "0.0.3"
+    expand-home-dir "github:jmquigley/expand-home-dir"
     fs-extra "^2.0.0"
     lodash "^4.17.4"
     yargs "^6.5.0"
