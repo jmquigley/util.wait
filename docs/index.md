@@ -43,13 +43,7 @@ Creates an instance of the Semaphore class
 <a name="new_Semaphore_new"></a>
 
 ### new Semaphore(timeout, [initial], ticks)
-This creates a simple semaphore counter instance.  Each async function
-will increment the semaphore as they are created.  As they finish their
-operation within the same process will decrement it.  When the wait() is
-started it will look at the counter to see if there are processes still
-waiting to finish (counter > 0).  It will then perform a delay loop
-and check for semaphore completion (count === 0).  It will continue this
-check until the counter reaches 0 or the timeout occurs.
+This creates a simple semaphore counter instance.  Each async functionwill increment the semaphore as they are created.  As they finish theiroperation within the same process will decrement it.  When the wait() isstarted it will look at the counter to see if there are processes stillwaiting to finish (counter > 0).  It will then perform a delay loopand check for semaphore completion (count === 0).  It will continue thischeck until the counter reaches 0 or the timeout occurs.
 
 
 | Param | Type | Default | Description |
@@ -75,16 +69,13 @@ Increments the internal value of the semaphore counter
 <a name="Semaphore+reset"></a>
 
 ### semaphore.reset()
-Resets the internal state of the semaphore instance.  Generally used
-once a semaphore is complete and needs to be reused.
+Resets the internal state of the semaphore instance.  Generally usedonce a semaphore is complete and needs to be reused.
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 <a name="Semaphore+wait"></a>
 
 ### semaphore.wait(self) ⇒
-Activated at some point in a process when one wants to wait for all
-semaphores to complete processing.  This call does not block the event
-loop.  This uses a Promise object to make the call async.
+Activated at some point in a process when one wants to wait for allsemaphores to complete processing.  This call does not block the eventloop.  This uses a Promise object to make the call async.
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 **Returns**: a JavaScript promise object.  
@@ -96,9 +87,7 @@ loop.  This uses a Promise object to make the call async.
 <a name="Semaphore+waitCallback"></a>
 
 ### semaphore.waitCallback(cb, arg, self)
-Activated at some point in a process when one wants to wait for all
-semaphores to complete processing.  This uses a callback function to
-signal completion instead of a Promise.
+Activated at some point in a process when one wants to wait for allsemaphores to complete processing.  This uses a callback function tosignal completion instead of a Promise.
 
 **Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
 
@@ -116,8 +105,7 @@ signal completion instead of a Promise.
 <a name="wait"></a>
 
 ## wait(stop, cb, arg, delay)
-Performs a BLOCKING noisy spinwait when called.  It will stay in this
-function until the wait period has ended.
+Performs a BLOCKING noisy spinwait when called.  It will stay in thisfunction until the wait period has ended.
 
 **Kind**: global function  
 
@@ -145,10 +133,7 @@ Wraps the waitCallback function into a Promise.
 <a name="waitCallback"></a>
 
 ## waitCallback(stop, cb, arg, delay)
-Uses the timeout function to create a pause in a function without stopping
-the event loop.  The default without any parameters is a 1 second pause.
-When the timeout ends a callback is executed and it receives the *arg*
-parameter to be used in the callback.  This is an ansync function.
+Uses the timeout function to create a pause in a function without stoppingthe event loop.  The default without any parameters is a 1 second pause.When the timeout ends a callback is executed and it receives the *arg*parameter to be used in the callback.  This is an ansync function.
 
 **Kind**: global function  
 

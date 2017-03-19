@@ -1,7 +1,7 @@
 'use strict';
 
 import * as assert from 'assert';
-import {Semaphore, wait, waitPromise, waitCallback} from '../index';
+import {Semaphore, wait, waitCallback, waitPromise} from '../index';
 import {debug} from './helpers';
 
 describe('Testing util.wait', () => {
@@ -39,7 +39,6 @@ describe('Testing util.wait', () => {
 			return cb();
 		}, 'stuff');
 	});
-
 
 	it('Test the las increment (2 seconds)', (cb) => {
 		let semaphore = new Semaphore(10, true);
