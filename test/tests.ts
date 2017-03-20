@@ -1,13 +1,14 @@
 'use strict';
 
 import * as assert from 'assert';
+import * as path from 'path';
 import {Semaphore, wait, waitCallback, waitPromise} from '../index';
 import {debug} from './helpers';
 
-describe('Testing util.wait', () => {
+describe(path.basename(__filename), () => {
 
 	it('Test the wait function (3 seconds)', (done) => {
-		debug(`Starting promise wait: ${new Date()}`);
+		debug(`Starting wait: ${new Date()}`);
 		wait(3, (ret: string) => {
 			assert.equal(ret, 'stuff');
 			debug(`Finished wait(): ${new Date()}`);
@@ -40,7 +41,7 @@ describe('Testing util.wait', () => {
 		}, 'stuff');
 	});
 
-	it('Test the las increment (2 seconds)', (cb) => {
+	it('Test the initial increment (2 seconds)', (cb) => {
 		let semaphore = new Semaphore(10, true);
 
 		function f1() {

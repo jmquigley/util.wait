@@ -2,14 +2,16 @@
 
 > Javascript pause/wait functions
 
-This [library](docs/index.md) contains two functions and a class:
+This [library](docs/index.md) contains three functions and a class:
 
 - [wait](docs/index.md#wait) - Performs a blocked wait (like sleep) and doesn't return until the wait is over.  Calls the given callback at the end of the wait period.
 - [waitPromise](docs/index.md#waitPromise) - JavaScript function that returns a Promise and can be used in a thenable chain to delay for N iterations of S seconds.  This is an async function.  The delay returns via a thenable when complete.
 - [waitCallback](docs/index.md#waitCallback) - JavaScript function that uses a callback after N iterations of S seconds.  This is an async function.  The delay returns via callback when complete.
 - [Semaphore](docs/index.md#Semaphore) - A simple JavaScript semaphore counter object.  Creates a completion barrier with a counter.
 
-The two functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped [Timeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout) call.  The functions rely on the processing of a *Promise* or a *callback* to do this.
+
+
+The promise and callback functions are used to create a delay in processing without stopping the event loop.  It does this by using a wrapped [Timeout](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout) call.  The functions rely on the processing of a *Promise* or a *callback* to do this.  The wait function is similar to sleep and will block.
 
 The class implements a simple [semaphore counter](https://en.wikipedia.org/wiki/Asynchronous_semaphore).  An instance of `Semaphore` is created.  Before the `wait()` promise is called the semaphore is incremented and/or decremented.  While the semaphore counter is `> 0` a wait state will occur.  During processing the semaphore is decremented as a process that uses the semaphore is finishd with it.  When the counter is `<= 0` then the `wait()` state will end and the semaphore promise will be resolved.
 
