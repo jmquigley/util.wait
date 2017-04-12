@@ -6,11 +6,11 @@
  * @param arg {Object} the argument passed to the callback
  * @param delay {number} the number of millis in each delay.  Default is 1000
  */
-export function wait(stop: number = 1, cb: Function = null, arg: any = null, delay: number = 1000) {
-	let start = Date.now();
-	let end = start + (stop * delay);
+export function wait(stop: number = 1, cb: any = null, arg: any = null, delay: number = 1000) {
+	const start = Date.now();
+	const end = start + (stop * delay);
 
-	while (Date.now() < end) {};  // noisy spinwait
+	while (Date.now() < end) {}  // noisy spinwait
 	if (cb) {
 		cb(arg);
 	}
@@ -26,7 +26,7 @@ export function wait(stop: number = 1, cb: Function = null, arg: any = null, del
  * @returns {Promise} a Javascript promise object
  */
 export function waitPromise(stop: number = 1, arg: any = null, delay: number = 1000) {
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		waitCallback(stop, (ret: any) => {
 			resolve(ret);
 		}, arg,  delay);
@@ -46,7 +46,7 @@ export function waitPromise(stop: number = 1, arg: any = null, delay: number = 1
  * the wait is complete.
  * @param delay {number} the number of millis to pause per stop.
  */
-export function waitCallback(stop: number = 1, cb: Function = null, arg: any = null, delay: number = 1000): void {
+export function waitCallback(stop: number = 1, cb: any = null, arg: any = null, delay: number = 1000): void {
 	function done() {
 		if (cb) {
 			cb(arg);
@@ -164,7 +164,7 @@ export class Semaphore {
 	 * @param arg {Object} an argument that can be passed to the callback
 	 * @param self {Semaphore} a reference to the Semaphore instance
 	 */
-	public waitCallback(cb: Function, arg: any = null, self = this) {
+	public waitCallback(cb: any, arg: any = null, self = this) {
 		function run() {
 			if (self._duration < self._delay) {
 				if (self._counter <= 0) {
