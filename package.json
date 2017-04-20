@@ -17,10 +17,10 @@
     "node": ">=7.5"
   },
   "dependencies": {
-    "util.pkgwrap": "0.0.20"
+    "util.pkgwrap": "0.0.26"
   },
   "devDependencies": {
-    "@types/node": "^7.0.12",
+    "@types/node": "^7.0.13",
     "ava": "^0.19.1",
     "coveralls": "^2.13.0",
     "gulp": "^3.9.1",

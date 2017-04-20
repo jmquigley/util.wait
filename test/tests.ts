@@ -35,7 +35,7 @@ test.cb('Test the wait callback function (3 seconds)', t => {
 });
 
 test.cb('Test the initial increment (2 seconds)', t => {
-	let semaphore = new Semaphore(10, true);
+	const semaphore = new Semaphore(10, true);
 
 	function f1() {
 		debug(`Starting F1: ${new Date()}`);
@@ -64,7 +64,7 @@ test.cb('Test the initial increment (2 seconds)', t => {
 });
 
 test.cb('Test the semaphore class with callback (5 seconds)', t => {
-	let semaphore = new Semaphore(10);
+	const semaphore = new Semaphore(10);
 
 	function f1() {
 		debug(`Starting F1: ${new Date()}`);
@@ -107,8 +107,8 @@ test.cb('Test the semaphore class with callback (5 seconds)', t => {
 });
 
 test.cb('Test semaphore timeout error with callback (2 seconds)', t => {
-	let timeout: number = 2;
-	let semaphore = new Semaphore(timeout);
+	const timeout: number = 2;
+	const semaphore = new Semaphore(timeout);
 
 	function fn() {
 		debug(`Starting fn: ${new Date()}`);
@@ -132,7 +132,7 @@ test.cb('Test semaphore timeout error with callback (2 seconds)', t => {
 });
 
 test('Test the semaphore class with Promise (5 seconds)', async t => {
-	let semaphore = new Semaphore(10);
+	const semaphore = new Semaphore(10);
 
 	function f1() {
 		debug(`Starting F1: ${new Date()}`);
@@ -173,8 +173,8 @@ test('Test the semaphore class with Promise (5 seconds)', async t => {
 });
 
 test('Test semaphore timeout error with Promise (2 seconds)', async t => {
-	let timeout: number = 2;
-	let semaphore = new Semaphore(timeout);
+	const timeout: number = 2;
+	const semaphore = new Semaphore(timeout);
 
 	function fn() {
 		debug(`Starting fn: ${new Date()}`);
