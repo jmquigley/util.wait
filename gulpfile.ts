@@ -6,7 +6,7 @@ const gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
 const gutil = require('gulp-util');
 const rename = require('gulp-rename');
 
-gulp.task('site', cb => {
+gulp.task('site', (cb: Function) => {
 	let config = {
 		tags: {
 			allowUnknownTags: true
@@ -35,13 +35,13 @@ gulp.task('site', cb => {
 		.pipe(jsdoc(config, cb));
 });
 
-gulp.task('markdown', (cb) => {
+gulp.task('markdown', (cb: Function) => {
 	return gulp.src(['index.js'])
 		.pipe(gulpJsdoc2md(cb))
-		.on('error', err => {
+		.on('error', (err: Error) => {
 			gutil.log(gutil.colors.red('jsdoc2md failed'), err.message)
 		})
-		.pipe(rename(path => {
+		.pipe(rename((path: any) => {
 			path.extname = '.md';
 		}))
 		.pipe(gulp.dest('docs'));
