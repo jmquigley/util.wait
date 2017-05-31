@@ -63,14 +63,14 @@ check until the counter reaches 0 or the timeout occurs.
 ### semaphore.decrement() ⇒
 Decrements the internal value of the semaphore counter
 
-**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Kind**: instance method of [<code>Semaphore</code>](#Semaphore)  
 **Returns**: the current value of the counter.  
 <a name="Semaphore+increment"></a>
 
 ### semaphore.increment() ⇒
 Increments the internal value of the semaphore counter
 
-**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Kind**: instance method of [<code>Semaphore</code>](#Semaphore)  
 **Returns**: the current value of the counter.  
 <a name="Semaphore+reset"></a>
 
@@ -78,7 +78,7 @@ Increments the internal value of the semaphore counter
 Resets the internal state of the semaphore instance.  Generally used
 once a semaphore is complete and needs to be reused.
 
-**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Kind**: instance method of [<code>Semaphore</code>](#Semaphore)  
 <a name="Semaphore+wait"></a>
 
 ### semaphore.wait(self) ⇒
@@ -86,12 +86,12 @@ Activated at some point in a process when one wants to wait for all
 semaphores to complete processing.  This call does not block the event
 loop.  This uses a Promise object to make the call async.
 
-**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Kind**: instance method of [<code>Semaphore</code>](#Semaphore)  
 **Returns**: a JavaScript promise object.  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| self | <code>[Semaphore](#Semaphore)</code> | a reference to the Semaphore instance |
+| self | [<code>Semaphore</code>](#Semaphore) | a reference to the Semaphore instance |
 
 <a name="Semaphore+waitCallback"></a>
 
@@ -100,18 +100,18 @@ Activated at some point in a process when one wants to wait for all
 semaphores to complete processing.  This uses a callback function to
 signal completion instead of a Promise.
 
-**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Kind**: instance method of [<code>Semaphore</code>](#Semaphore)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | cb | <code>function</code> |  | a callback function that is executed when the semaphore is complete. |
 | arg | <code>Object</code> | <code></code> | an argument that can be passed to the callback |
-| self | <code>[Semaphore](#Semaphore)</code> |  | a reference to the Semaphore instance |
+| self | [<code>Semaphore</code>](#Semaphore) |  | a reference to the Semaphore instance |
 
 <a name="Semaphore+toString"></a>
 
 ### semaphore.toString() ⇒
-**Kind**: instance method of <code>[Semaphore](#Semaphore)</code>  
+**Kind**: instance method of [<code>Semaphore</code>](#Semaphore)  
 **Returns**: a string representation of the semaphore instance  
 <a name="wait"></a>
 
