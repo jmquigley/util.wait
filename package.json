@@ -17,21 +17,21 @@
     "node": ">=7.5"
   },
   "dependencies": {
-    "util.pkgwrap": "0.0.57"
+    "util.pkgwrap": "0.0.59"
   },
   "devDependencies": {
-    "@types/node": "^7.0.23",
-    "ava": "^0.19.1",
+    "@types/node": "^8.0.7",
+    "ava": "^0.20.0",
     "coveralls": "^2.13.1",
-    "nyc": "^11.0.1",
-    "tslint": "^5.4.0",
-    "typescript": "^2.3.4"
+    "nyc": "^11.0.3",
+    "tslint": "^5.4.3",
+    "typescript": "^2.4.1"
   },
   "main": "./index.js",
   "types": "./index.d.ts",
   "scripts": {
-    "all": "npm install && npm run clean && npm run lint && npm run build && npm test && npm run report",
-    "build": "pkgwrap --build && npm run docs",
+    "all": "npm install && npm run clean && npm run lint && npm run build && npm run docs && npm test && npm run report",
+    "build": "pkgwrap --build",
     "clean": "pkgwrap --clean",
     "coverage": "pkgwrap --coverage",
     "docs": "pkgwrap --docs",
