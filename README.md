@@ -17,19 +17,16 @@ The class implements a simple [semaphore counter](https://en.wikipedia.org/wiki/
 
 ## Installation
 
-To install as a global package:
-```
-$ npm install --global util.wait
-```
+This module uses [yarn](https://yarnpkg.com/en/) to manage dependencies and run scripts for development.
 
 To install as an application dependency:
 ```
-$ npm install --save util.wait
+$ yarn add --dev util.wait
 ```
 
 To build the app and run all tests:
 ```
-$ npm run all
+$ yarn run all
 ```
 
 
