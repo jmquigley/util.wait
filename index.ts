@@ -47,13 +47,11 @@ export function waitPromise(stop: number = 1, arg: any = null, delay: number = 1
  * @param delay {number} the number of millis to pause per stop.
  */
 export function waitCallback(stop: number = 1, cb: any = null, arg: any = null, delay: number = 1000): void {
-	function done() {
+	setTimeout(() => {
 		if (cb) {
 			cb(arg);
 		}
-	}
-
-	setTimeout(done, stop * delay);
+	}, stop * delay);
 }
 
 /** Creates an instance of the Semaphore class */
@@ -64,7 +62,7 @@ export class Semaphore {
 	private _duration: number = 0;
 	private _errorState: boolean = false;
 	private _tick: number = 0;
-	private _ticks: number = 200;
+	private _ticks: number = 0;
 
 	/**
 	 * This creates a simple semaphore counter instance.  Each async function
@@ -86,7 +84,7 @@ export class Semaphore {
 	 * up the call stack.
 	 * @constructor
 	 */
-	constructor(timeout: number, initial: boolean = false, ticks: number = 200) {
+	constructor(timeout: number, initial: boolean = false, ticks: number = 10) {
 		this._delay = timeout * 1000;  // convert timeout seconds to millis
 		this._ticks = ticks;
 		this._tick = this._delay / this._ticks;
@@ -197,7 +195,7 @@ export class Semaphore {
 		s += `    counter: ${this.counter}\n`;
 		s += `    timeout: ${this._delay} millis\n`;
 		s += `   duration: ${this.duration} millis\n`;
-		s += ` errorState: ${this.errorState}`;
+		s += ` errorState: ${this.errorState}\n`;
 		s += `      ticks: ${this._ticks}\n`;
 		s += `       tick: ${this._tick} millis\n`;
 		s += '}\n';

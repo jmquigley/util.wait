@@ -56,7 +56,7 @@ check until the counter reaches 0 or the timeout occurs.
 | --- | --- | --- | --- |
 | timeout | <code>number</code> |  | the number of seconds that this semaphore will check for completion.  If the semaphore has not completed at the end of this delay an Error will returned to the wait callback. |
 | [initial] | <code>boolean</code> | <code>false</code> | if true, then the semaphore is initially incremented, otherwise it is zero.  The default is false. |
-| ticks | <code>number</code> | <code>200</code> | the number of times the semaphore will be checked. the timeout is divided by this number to determine how often the semaphore will be checked during the timeout.  This will prevent blowing up the call stack. |
+| ticks | <code>number</code> | <code>10</code> | the number of times the semaphore will be checked. the timeout is divided by this number to determine how often the semaphore will be checked during the timeout.  This will prevent blowing up the call stack. |
 
 <a name="Semaphore+decrement"></a>
 
