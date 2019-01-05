@@ -1,187 +1,186 @@
 'use strict';
 
-import test from 'ava';
 import {Semaphore, wait, waitCallback, waitPromise} from '../index';
 import {debug} from './helpers';
 
-test.cb('Test the wait function (3 seconds)', t => {
+const timeout: number = 20000;
+
+test('Test the wait function (3 seconds)', (done) => {
 	debug(`Starting wait: ${new Date()}`);
 	wait(3, (ret: string) => {
-		t.is(ret, 'stuff');
+		expect(ret).toBe('stuff');
 		debug(`Finished wait(): ${new Date()}`);
-		t.end();
+		done();
 	}, 'stuff');
-});
+}, timeout);
 
-test('Test the wait promise function (3 seconds)', async t => {
+test('Test the wait promise function (3 seconds)', async () => {
 	debug(`Starting promise wait: ${new Date()}`);
 	await waitPromise(3, 'stuff')
 		.then((ret: any) => {
-			t.is(ret, 'stuff');
+			expect(ret).toBe('stuff');
 			debug(`Finished promise wait: ${new Date()}`);
 		})
 		.catch((err: string) => {
-			t.fail(err);
+			throw new Error(err);
 		});
-});
+}, timeout);
 
-test.cb('Test the wait callback function (3 seconds)', t => {
+test('Test the wait callback function (3 seconds)', (done) => {
 	debug(`Starting wait callback: ${new Date()}`);
 	waitCallback(3, (ret: any) => {
-		t.is(ret, 'stuff');
+		expect(ret).toBe('stuff');
 		debug(`Finished wait callback: ${new Date()}`);
-		t.end();
+		done();
 	}, 'stuff');
-});
+}, timeout);
 
-test.cb('Test the initial increment (2 seconds)', t => {
+test('Test the initial increment (2 seconds)', (done) => {
 	const semaphore = new Semaphore(10, true);
 
 	(() => {
 		debug(`Starting F1: ${new Date()}`);
-		t.is(semaphore.counter, 1);
+		expect(semaphore.counter).toBe(1);
 		// Arbitrary delay to show that the semaphore is waiting
 		waitCallback(2, () => {
 			semaphore.decrement();
-			t.false(semaphore.errorState);
+			expect(semaphore.errorState).toBe(false);
 			debug(`Done with f1 (2 seconds): ${new Date()}`);
 		});
 	})();
 
 	semaphore.waitCallback((err: Error) => {
 		if (err) {
-			t.fail('This error should not occur');
-			return t.end();
+			throw new Error('This error should not occur');
 		}
 
-		t.is(semaphore.counter, 0);
-		t.false(semaphore.errorState);
+		expect(semaphore.counter).toBe(0);
+		expect(semaphore.errorState).toBe(false);
 		debug(`Finished: ${semaphore.toString()}`);
-		t.end();
+		done();
 	});
-});
+}, timeout);
 
-test.cb('Test the semaphore class with callback (5 seconds)', t => {
+test('Test the semaphore class with callback (5 seconds)', (done) => {
 	const semaphore = new Semaphore(10);
 
 	(() => {
 		debug(`Starting F1: ${new Date()}`);
-		t.is(semaphore.increment(), 1);
-		t.is(semaphore.counter, 1);
+		expect(semaphore.increment()).toBe(1);
+		expect(semaphore.counter).toBe(1);
 		// Arbitrary delay to show that the semaphore is waiting
 		waitCallback(2, () => {
 			semaphore.decrement();
-			t.false(semaphore.errorState);
+			expect(semaphore.errorState).toBe(false);
 			debug(`Done with f1 (2 seconds): ${new Date()}`);
 		});
 	})();
 
 	(() => {
 		debug(`Starting F2: ${new Date()}`);
-		t.is(semaphore.increment(), 2);
-		t.is(semaphore.counter, 2);
+		expect(semaphore.increment()).toBe(2);
+		expect(semaphore.counter).toBe(2);
 		// Arbitrary delay to show that the semaphore is waiting
 		waitCallback(5, () => {
 			semaphore.decrement();
-			t.false(semaphore.errorState);
+			expect(semaphore.errorState).toBe(false);
 			debug(`Done with f2 (5 seconds): ${new Date()}`);
 		});
 	})();
 
 	semaphore.waitCallback((err: Error) => {
 		if (err) {
-			t.fail('This error should not occur');
-			return t.end();
+			throw new Error('This error should not occur');
 		}
 
-		t.is(semaphore.counter, 0);
-		t.false(semaphore.errorState);
+		expect(semaphore.counter).toBe(0);
+		expect(semaphore.errorState).toBe(false);
 		debug(`Finished: ${semaphore.toString()}`);
-		t.end();
+		done();
 	});
-});
+}, timeout);
 
-test.cb('Test semaphore timeout error with callback (2 seconds)', t => {
+test('Test semaphore timeout error with callback (2 seconds)', (done) => {
 	const timeout: number = 2;
 	const semaphore = new Semaphore(timeout);
 
 	(() => {
 		debug(`Starting fn: ${new Date()}`);
-		t.is(semaphore.increment(), 1);
-		t.is(semaphore.counter, 1);
+		expect(semaphore.increment()).toBe(1);
+		expect(semaphore.counter).toBe(1);
 		waitCallback(5, () => {
-			t.true(semaphore.errorState);
+			expect(semaphore.errorState).toBe(true);
 		});
 	})();
 
 	semaphore.waitCallback((err: Error) => {
 		if (err) {
 			debug(`Caught semaphore wait error: ${semaphore.toString()}`);
-			t.is(err.message, `Semaphore timeout after ${timeout * 1000}`);
-			t.true(semaphore.errorState);
-			return t.end();
+			expect(err.message).toBe(`Semaphore timeout after ${timeout * 1000}`);
+			expect(semaphore.errorState).toBe(true);
+			return done();
 		}
 	});
-});
+}, timeout);
 
-test('Test the semaphore class with Promise (5 seconds)', async t => {
+test('Test the semaphore class with Promise (5 seconds)', async () => {
 	const semaphore = new Semaphore(10);
 
 	(() => {
 		debug(`Starting F1: ${new Date()}`);
-		t.is(semaphore.increment(), 1);
-		t.is(semaphore.counter, 1);
+		expect(semaphore.increment()).toBe(1);
+		expect(semaphore.counter).toBe(1);
 		// Arbitrary delay to show that the semaphore is waiting
 		waitCallback(2, () => {
 			semaphore.decrement();
-			t.false(semaphore.errorState);
+			expect(semaphore.errorState).toBe(false);
 			debug(`Done with f1 (2 seconds): ${new Date()}`);
 		});
 	})();
 
 	(() => {
 		debug(`Starting F2: ${new Date()}`);
-		t.is(semaphore.increment(), 2);
-		t.is(semaphore.counter, 2);
+		expect(semaphore.increment()).toBe(2);
+		expect(semaphore.counter).toBe(2);
 		// Arbitrary delay to show that the semaphore is waiting
 		waitCallback(5, () => {
 			semaphore.decrement();
-			t.false(semaphore.errorState);
+			expect(semaphore.errorState).toBe(false);
 			debug(`Done with f2 (5 seconds): ${new Date()}`);
 		});
 	})();
 
 	await semaphore.wait()
 		.then(() => {
-			t.is(semaphore.counter, 0);
-			t.false(semaphore.errorState);
+			expect(semaphore.counter).toBe(0);
+			expect(semaphore.errorState).toBe(false);
 			debug(`Finished: ${semaphore.toString()}`);
 		})
 		.catch((err: string) => {
-			t.fail(err);
+			throw new Error(err);
 		});
-});
+}, timeout);
 
-test('Test semaphore timeout error with Promise (2 seconds)', async t => {
+test('Test semaphore timeout error with Promise (2 seconds)', async () => {
 	const timeout: number = 2;
 	const semaphore = new Semaphore(timeout);
 
 	(() => {
 		debug(`Starting fn: ${new Date()}`);
-		t.is(semaphore.increment(), 1);
-		t.is(semaphore.counter, 1);
+		expect(semaphore.increment()).toBe(1);
+		expect(semaphore.counter).toBe(1);
 		waitCallback(5, () => {
-			t.true(semaphore.errorState);
+			expect(semaphore.errorState).toBe(true);
 		});
 	})();
 
 	await semaphore.wait()
 		.then(() => {
-			t.fail('Timeout error should have occurred');
+			throw new Error('Timeout error should have occurred');
 		})
 		.catch((err: string) => {
 			debug(`Caught semaphore wait error: ${semaphore.toString()}`);
-			t.true(semaphore.errorState);
-			t.is(err, `Semaphore timeout after ${timeout * 1000}`);
+			expect(semaphore.errorState).toBe(true);
+			expect(err).toBe(`Semaphore timeout after ${timeout * 1000}`);
 		});
-});
+}, timeout);
