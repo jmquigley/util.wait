@@ -6,11 +6,16 @@
  * @param arg {Object} the argument passed to the callback
  * @param delay {number} the number of millis in each delay.  Default is 1000
  */
-export function wait(stop: number = 1, cb: any = null, arg: any = null, delay: number = 1000) {
+export function wait(
+	stop: number = 1,
+	cb: any = null,
+	arg: any = null,
+	delay: number = 1000
+) {
 	const start = Date.now();
-	const end = start + (stop * delay);
+	const end = start + stop * delay;
 
-	while (Date.now() < end) {}  // noisy spinwait
+	while (Date.now() < end) {} // noisy spinwait
 	if (cb) {
 		cb(arg);
 	}
@@ -25,11 +30,20 @@ export function wait(stop: number = 1, cb: any = null, arg: any = null, delay: n
  * @param delay {number} the number of millis to pause per stop.
  * @returns {Promise} a Javascript promise object
  */
-export function waitPromise(stop: number = 1, arg: any = null, delay: number = 1000) {
-	return new Promise(resolve => {
-		waitCallback(stop, (ret: any) => {
-			resolve(ret);
-		}, arg,  delay);
+export function waitPromise(
+	stop: number = 1,
+	arg: any = null,
+	delay: number = 1000
+) {
+	return new Promise((resolve) => {
+		waitCallback(
+			stop,
+			(ret: any) => {
+				resolve(ret);
+			},
+			arg,
+			delay
+		);
 	});
 }
 
@@ -46,7 +60,12 @@ export function waitPromise(stop: number = 1, arg: any = null, delay: number = 1
  * the wait is complete.
  * @param delay {number} the number of millis to pause per stop.
  */
-export function waitCallback(stop: number = 1, cb: any = null, arg: any = null, delay: number = 1000): void {
+export function waitCallback(
+	stop: number = 1,
+	cb: any = null,
+	arg: any = null,
+	delay: number = 1000
+): void {
 	setTimeout(() => {
 		if (cb) {
 			cb(arg);
@@ -56,7 +75,6 @@ export function waitCallback(stop: number = 1, cb: any = null, arg: any = null, 
 
 /** Creates an instance of the Semaphore class */
 export class Semaphore {
-
 	private _counter: number = 0;
 	private _delay: number = 0;
 	private _duration: number = 0;
@@ -85,7 +103,7 @@ export class Semaphore {
 	 * @constructor
 	 */
 	constructor(timeout: number, initial: boolean = false, ticks: number = 10) {
-		this._delay = timeout * 1000;  // convert timeout seconds to millis
+		this._delay = timeout * 1000; // convert timeout seconds to millis
 		this._ticks = ticks;
 		this._tick = this._delay / this._ticks;
 		this.reset();
@@ -138,10 +156,15 @@ export class Semaphore {
 					if (self._counter <= 0) {
 						resolve(self);
 					} else {
-						waitCallback(1, () => {
-							self._duration += self._tick;
-							run();
-						}, null, self._tick);
+						waitCallback(
+							1,
+							() => {
+								self._duration += self._tick;
+								run();
+							},
+							null,
+							self._tick
+						);
 					}
 				} else {
 					self._errorState = true;
@@ -170,15 +193,23 @@ export class Semaphore {
 						cb(null, arg);
 					}
 				} else {
-					waitCallback(1, () => {
-						self._duration += self._tick;
-						run();
-					}, null, self._tick);
+					waitCallback(
+						1,
+						() => {
+							self._duration += self._tick;
+							run();
+						},
+						null,
+						self._tick
+					);
 				}
 			} else {
 				if (cb) {
 					self._errorState = true;
-					cb(new Error(`Semaphore timeout after ${self._delay}`), arg);
+					cb(
+						new Error(`Semaphore timeout after ${self._delay}`),
+						arg
+					);
 				}
 			}
 		}
@@ -190,15 +221,15 @@ export class Semaphore {
 	 * @returns a string representation of the semaphore instance
 	 */
 	public toString(): string {
-		let s: string = '';
-		s += 'Semaphore {\n';
+		let s: string = "";
+		s += "Semaphore {\n";
 		s += `    counter: ${this.counter}\n`;
 		s += `    timeout: ${this._delay} millis\n`;
 		s += `   duration: ${this.duration} millis\n`;
 		s += ` errorState: ${this.errorState}\n`;
 		s += `      ticks: ${this._ticks}\n`;
 		s += `       tick: ${this._tick} millis\n`;
-		s += '}\n';
+		s += "}\n";
 
 		return s;
 	}
