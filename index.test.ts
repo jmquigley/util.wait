@@ -1,10 +1,8 @@
 "use strict";
 
-import "@babel/polyfill";
+import {Semaphore, wait, waitCallback, waitPromise} from "./index";
 
-import {Semaphore, wait, waitCallback, waitPromise} from "../index";
-import {debug} from "./helpers";
-
+const debug = require("debug")("wait.test");
 const timeout: number = 20000;
 
 test(
