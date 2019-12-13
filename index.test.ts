@@ -1,13 +1,11 @@
-"use strict";
-
-import {Semaphore, wait, waitCallback, waitPromise} from "./index";
+import { Semaphore, wait, waitCallback, waitPromise } from "./index";
 
 const debug = require("debug")("wait.test");
 const timeout: number = 20000;
 
 test(
 	"Test the wait function (3 seconds)",
-	(done) => {
+	done => {
 		debug(`Starting wait: ${new Date()}`);
 		wait(
 			3,
@@ -40,7 +38,7 @@ test(
 
 test(
 	"Test the wait callback function (3 seconds)",
-	(done) => {
+	done => {
 		debug(`Starting wait callback: ${new Date()}`);
 		waitCallback(
 			3,
@@ -57,7 +55,7 @@ test(
 
 test(
 	"Test the initial increment (2 seconds)",
-	(done) => {
+	done => {
 		const semaphore = new Semaphore(10, true);
 
 		(() => {
@@ -87,7 +85,7 @@ test(
 
 test(
 	"Test the semaphore class with callback (5 seconds)",
-	(done) => {
+	done => {
 		const semaphore = new Semaphore(10);
 
 		(() => {
@@ -130,9 +128,9 @@ test(
 
 test(
 	"Test semaphore timeout error with callback (2 seconds)",
-	(done) => {
-		const timeout: number = 2;
-		const semaphore = new Semaphore(timeout);
+	done => {
+		const semTimeout: number = 2;
+		const semaphore = new Semaphore(semTimeout);
 
 		(() => {
 			debug(`Starting fn: ${new Date()}`);
@@ -147,7 +145,7 @@ test(
 			if (err) {
 				debug(`Caught semaphore wait error: ${semaphore.toString()}`);
 				expect(err.message).toBe(
-					`Semaphore timeout after ${timeout * 1000}`
+					`Semaphore timeout after ${semTimeout * 1000}`
 				);
 				expect(semaphore.errorState).toBe(true);
 				return done();
@@ -203,8 +201,8 @@ test(
 test(
 	"Test semaphore timeout error with Promise (2 seconds)",
 	async () => {
-		const timeout: number = 2;
-		const semaphore = new Semaphore(timeout);
+		const semTimeout: number = 2;
+		const semaphore = new Semaphore(semTimeout);
 
 		(() => {
 			debug(`Starting fn: ${new Date()}`);
@@ -223,7 +221,9 @@ test(
 			.catch((err: string) => {
 				debug(`Caught semaphore wait error: ${semaphore.toString()}`);
 				expect(semaphore.errorState).toBe(true);
-				expect(err).toBe(`Semaphore timeout after ${timeout * 1000}`);
+				expect(err).toBe(
+					`Semaphore timeout after ${semTimeout * 1000}`
+				);
 			});
 	},
 	timeout

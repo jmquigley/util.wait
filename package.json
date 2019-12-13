@@ -1,67 +1,66 @@
 {
-	"name": "util.wait",
-	"version": "0.0.37",
-	"author": "jmquigley <jmquigley@outlook.com>",
-	"description": "Javascript pause/wait functions",
-	"private": false,
-	"debug": false,
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/jmquigley/util.wait"
-	},
-	"bugs": {
-		"url": "https://github.com/jmquigley/util.wait/issues"
-	},
-	"engines": {
-		"node": ">=7.x"
-	},
-	"main": "./index.umd.min.js",
-	"module": "./index.es.min.js",
-	"types": "./index.d.ts",
-	"files": [
-		"index.*.min.js",
-		"index.d.ts"
-	],
-	"devDependencies": {
-		"@babel/cli": "^7.2.3",
-		"@babel/core": "^7.3.4",
-		"@babel/plugin-transform-modules-umd": "^7.2.0",
-		"@babel/plugin-transform-runtime": "^7.3.4",
-		"@babel/polyfill": "^7.2.5",
-		"@babel/preset-env": "^7.3.4",
-		"@babel/preset-typescript": "^7.3.3",
-		"@babel/runtime": "^7.3.4",
-		"@types/jest": "^24.0.11",
-		"@types/node": "^11.11.1",
-		"babel-minify": "^0.5.0",
-		"babel-preset-minify": "^0.5.0",
-		"coveralls": "^3.0.3",
-		"debug": "^4.1.1",
-		"jest": "^24.4.0",
-		"prettier": "^1.16.4",
-		"tslint": "^5.13.1",
-		"tslint-config-prettier": "^1.18.0",
-		"typescript": "^3.3.3333",
-		"util.pkgwrap": "^0.0.105"
-	},
-	"pkgwrap": {
-		"cleanup": [
-			"docs"
-		]
-	},
-	"scripts": {
-		"all": "yarn install && yarn build && yarn docs && yarn test && yarn manifest",
-		"build": "yarn clean && yarn lint && yarn prettier && yarn build:es && yarn build:umd",
-		"build:es": "tsc -p . && minify index.js --out-file index.es.min.js",
-		"build:umd": "babel index.js --out-file index.umd.min.js",
-		"clean": "pkgwrap --clean",
-		"clean:dist": "yarn clean && rimraf node_modules/ yarn.lock",
-		"coverage": "pkgwrap --coverage --jest",
-		"docs": "pkgwrap --docs",
-		"lint": "pkgwrap --lint",
-		"manifest": "npm pack --dry-run",
-		"prettier": "prettier --write \"**/*.{ts,tsx,js,json,yaml,yml,css}\"",
-		"test": "jest"
-	}
+  "name": "util.wait",
+  "version": "0.0.38",
+  "author": "jmquigley <jmquigley@outlook.com>",
+  "description": "Javascript pause/wait functions",
+  "private": false,
+  "debug": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jmquigley/util.wait"
+  },
+  "bugs": {
+    "url": "https://github.com/jmquigley/util.wait/issues"
+  },
+  "engines": {
+    "node": ">=7.x"
+  },
+  "main": "./index.umd.min.js",
+  "module": "./index.es.min.js",
+  "types": "./index.d.ts",
+  "files": [
+    "index.*.min.js",
+    "index.d.ts"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-modules-umd": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.6",
+    "@babel/preset-typescript": "^7.7.4",
+    "@babel/runtime": "^7.7.6",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.17",
+    "babel-minify": "^0.5.1",
+    "babel-preset-minify": "^0.5.1",
+    "coveralls": "^3.0.9",
+    "debug": "^4.1.1",
+    "jest": "^24.9.0",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.3",
+    "util.pkgwrap": "^0.0.115"
+  },
+  "pkgwrap": {
+    "cleanup": [
+      "docs"
+    ]
+  },
+  "scripts": {
+    "all": "yarn install && yarn build && yarn docs && yarn test && yarn manifest",
+    "build": "yarn clean && yarn lint && yarn prettier && yarn build:es && yarn build:umd",
+    "build:es": "tsc -p . && minify index.js --out-file index.es.min.js",
+    "build:umd": "babel index.js --out-file index.umd.min.js",
+    "clean": "pkgwrap --clean",
+    "clean:dist": "yarn clean && rimraf node_modules/ yarn.lock",
+    "coverage": "pkgwrap --coverage --jest",
+    "docs": "pkgwrap --docs",
+    "lint": "pkgwrap --lint",
+    "manifest": "npm pack --dry-run",
+    "prettier": "pkgwrap --prettier",
+    "test": "jest"
+  }
 }
