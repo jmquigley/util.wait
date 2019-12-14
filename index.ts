@@ -35,7 +35,7 @@ export function waitPromise(
 	arg: any = null,
 	delay: number = 1000
 ) {
-	return new Promise(resolve => {
+	return new Promise((resolve) => {
 		waitCallback(
 			stop,
 			(ret: any) => {

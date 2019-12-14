@@ -1,11 +1,11 @@
-import { Semaphore, wait, waitCallback, waitPromise } from "./index";
+import {Semaphore, wait, waitCallback, waitPromise} from "./index";
 
 const debug = require("debug")("wait.test");
 const timeout: number = 20000;
 
 test(
 	"Test the wait function (3 seconds)",
-	done => {
+	(done) => {
 		debug(`Starting wait: ${new Date()}`);
 		wait(
 			3,
@@ -38,7 +38,7 @@ test(
 
 test(
 	"Test the wait callback function (3 seconds)",
-	done => {
+	(done) => {
 		debug(`Starting wait callback: ${new Date()}`);
 		waitCallback(
 			3,
@@ -55,7 +55,7 @@ test(
 
 test(
 	"Test the initial increment (2 seconds)",
-	done => {
+	(done) => {
 		const semaphore = new Semaphore(10, true);
 
 		(() => {
@@ -85,7 +85,7 @@ test(
 
 test(
 	"Test the semaphore class with callback (5 seconds)",
-	done => {
+	(done) => {
 		const semaphore = new Semaphore(10);
 
 		(() => {
@@ -128,7 +128,7 @@ test(
 
 test(
 	"Test semaphore timeout error with callback (2 seconds)",
-	done => {
+	(done) => {
 		const semTimeout: number = 2;
 		const semaphore = new Semaphore(semTimeout);
 
